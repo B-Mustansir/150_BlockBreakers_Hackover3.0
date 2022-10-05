@@ -12,6 +12,7 @@ error_reporting(0) ?>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="https://unpkg.com/moralis-v1/dist/moralis.js"></script>
     <SCript type="text/javascript" src="jquery.js"></SCript>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 </head>
 <style>
     a {
@@ -214,6 +215,7 @@ background-image: linear-gradient(300deg, #393660 0%, #000000 95%);
             <br>
             Location of crime:
             <br>
+            <button onclick="getLocation()">LOCATION</button>
             <input type="text" placeholder="Enter Location of crime " required name="location" id="location">
             <br>
             Description :
@@ -230,6 +232,29 @@ background-image: linear-gradient(300deg, #393660 0%, #000000 95%);
     <div id="result"></div>
 </body>
 <script type="text/javascript">
+var locLong;
+var locLat;
+function getLocation(){
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition
+        (showPosition);
+    } else {
+        console.log("Browser dont support grolaction");
+    }
+
+    function showPosition(position){
+locLong=position.coords.longitude
+locLat=position.coords.latitude
+console.log(locLong,locLat)
+
+    }
+
+
+}
+console.log(locLong,locLat)
+
+
+
     var hash;
 Moralis.initialize("vnwfK8neMxiH5D3VCZUUCZbT42GuHZ5Ykuezkj78");
 Moralis.serverURL="https://dtw3vvtqurby.usemoralis.com:2053/server";
@@ -260,9 +285,11 @@ const metadata={
     "contact":contact,
     "aadhar":aadhar,
     "location":location,
-    "description":description
-
+    "description":description,
+    "latitude":locLat,
+    "longitude":locLong
 }
+
 const file= new Moralis.File("file.json",{base64:btoa(JSON.stringify(metadata))});
 await file.saveIPFS();
 var hashy=file.ipfs();
@@ -297,9 +324,10 @@ asif= async()=>{
    
 }
 
-
-
-
+$.getJSON('https://ipfs.moralis.io:2053/ipfs/QmQabrKq4WeW9t6F98eyDdnRRm9nWTQKep3yLRcEMphCVe', function(data) {
+    var obj = JSON.parse(name)
+    console.log(obj)
+});
 
 </script>
 <?php
